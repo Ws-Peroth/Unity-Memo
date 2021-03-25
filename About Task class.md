@@ -3,5 +3,48 @@
 * Task : 비동기 작업을 나타내는 클래스로 ```System.Threading.Tasks``` 네임스페이스 안에 있습니다.
 * 값을 반환하는 작업일 경우 ```Tast<TReasult>``` 를 사용합니다.
 * task에 주어진 작업은 ```task.Start();```로 호출하여 다른 쓰레드에서 task작업을 수행할 수 있습니다.
-  그리고, ```task.Wait()```을 통해 해당 task가 종료될 때 까지 대기할 수 있습니다. 
-* Add information
+  그리고, ```task.Wait()```을 통해 해당 task가 종료될 때 까지 대기할 수 있습니다.
+
+* 이해를 위해 다음과 같은 코드를 짜보았다.
+  
+  ```csharp
+  using UnityEngine;
+  using System.Threading.Tasks;
+  
+  public class TaskTest : MonoBehaviour
+  {
+      public void Start()
+      {
+          print("Call Start");
+          Task<int> task = new Task<int>(() => this.TaskProcess(5));
+  
+          task.Start();  // 다른 스레드에서 task 실행
+  
+          print("대기중");
+  
+          task.Wait();   // task가 종료될때까지 대기
+  
+          Debug.Log("task Result = " + task.Result);
+      }
+  
+  
+      public int TaskProcess(int countNumer)
+      {
+          print("start Process");
+  
+          for(int i = 0; i <= countNumer; i++)
+          {
+              print("Count : " + i);  // 0 부터 countNumer까지 수를 출력하는 프로그램
+          }
+  
+          print("End Process");
+          return countNumer;
+      }
+  }
+  ```
+  
+  프로그램이 실행되면 자동적으로 실행이 되는 Start()함수 안에 실행코드를 구성하여 실행되도록 하였습니다.
+  
+  먼저 int 형을 반환핟을 수 있도록 Task<int>
+  
+  
